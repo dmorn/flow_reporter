@@ -19,7 +19,7 @@ defmodule Flow.Reporter.Stats do
   end
 
   def report(%Stats{pid: pid}) do
-    state = Agent.get(pid, fn state -> state end)
+    state = Agent.get(pid, fn state -> state end, :infinity)
     Report.from_state(state)
   end
 end
