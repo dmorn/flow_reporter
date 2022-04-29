@@ -31,7 +31,7 @@ defmodule Flow.Reporter.Stats do
   end
 
   def spans_stream(%Stats{pid: pid}) do
-    Agent.get(pid, fn state -> State.spans_stream(state) end)
+    Agent.get(pid, fn state -> State.spans_stream(state) end, :infinity)
   end
 end
 
