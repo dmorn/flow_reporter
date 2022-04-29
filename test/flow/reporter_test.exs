@@ -15,11 +15,12 @@ defmodule Flow.ReporterTest do
         Map.update(acc, x, 1, fn old -> old + 1 end)
       end)
 
-    stats = Stats.new()
+    id = Reporter.uniq_event_prefix()
+    stats = Stats.new(id)
     collector = Composite.new([stats])
 
     flow
-    |> Reporter.attach(collector)
+    |> Reporter.attach(collector, id)
     |> Flow.run()
 
     %Stats.Report{} = Stats.report(stats)

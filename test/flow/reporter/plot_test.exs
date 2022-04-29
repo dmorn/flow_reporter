@@ -17,15 +17,17 @@ defmodule Flow.Reporter.PlotTest do
         Map.update(acc, x, 1, fn old -> old + 1 end)
       end)
 
-    collector = Stats.new()
+    id = Reporter.uniq_event_prefix()
+    collector = Stats.new(id)
 
     flow
-    |> Reporter.attach(collector)
+    |> Reporter.attach(collector, id)
     |> Flow.run()
 
     %Vl{} =
       collector
-      |> Stats.spans()
+      |> Stats.spans_stream()
+      |> Enum.into([])
       |> then(&Plot.encode_spans(Vl.new(), &1))
   end
 end
