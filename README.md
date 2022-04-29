@@ -34,7 +34,7 @@ flow =
     Map.update(acc, x, 1, fn old -> old + 1 end)
   end)
 
-# Here begins the contribution of this work
+# The contribution of this work begins here
 
 id = Reporter.uniq_event_prefix()
 collector = Stats.new(id)
