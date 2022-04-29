@@ -1,20 +1,25 @@
 defmodule Flow.Reporter do
-  def analyse(flow, resolution \\ :millisecond) do
-    t =
-      :erlang.system_time()
-      |> System.convert_time_unit(:native, resolution)
-      |> Integer.to_string()
-      |> String.to_atom()
+  # stats = Flow.Reporter.Stats.new()
+  # analise(flow, stats)
+  # Flow.Reporter.Stats.report(stats)
 
-    event_prefix = [:flow, :reporter, t]
+  @doc """
+  This function returns an instrumented flow that will send telemetry events to
+  the provided collector at each execution.
+  """
+  @spec attach(Flow.t(), Flow.Telemetry.Collector.t()) :: Flow.t()
+  def attach(flow, collector) do
+    event_prefix = uniq_event_prefix()
+    {:ok, _} = Flow.Telemetry.Dispatcher.attach(collector, event_prefix)
+    Flow.Telemetry.instrument(flow, event_prefix)
+  end
 
-    stats = Flow.Reporter.Stats.new()
-    {:ok, _} = Flow.Telemetry.Dispatcher.attach(stats, event_prefix)
-
-    flow
-    |> Flow.Telemetry.instrument(event_prefix)
-    |> Flow.run()
-
-    Flow.Reporter.Stats.report(stats)
+  defp uniq_event_prefix() do
+    :erlang.system_time()
+    |> Integer.to_string()
+    |> String.to_atom()
+    |> List.wrap()
+    |> Enum.concat([:reporter, :flow])
+    |> Enum.reverse()
   end
 end

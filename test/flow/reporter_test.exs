@@ -2,9 +2,10 @@ defmodule Flow.ReporterTest do
   use ExUnit.Case
 
   alias Flow.Reporter
+  alias Flow.Reporter.{Composite, Stats}
 
-  test "analise/1 does produce a report" do
-    %Reporter.Stats.Report{} =
+  test "attach/1 does not break" do
+    flow =
       ["roses are red", "violets are blue"]
       |> Flow.from_enumerable()
       |> Flow.flat_map(&String.split/1)
@@ -13,6 +14,14 @@ defmodule Flow.ReporterTest do
       |> Flow.reduce(fn -> %{} end, fn x, acc ->
         Map.update(acc, x, 1, fn old -> old + 1 end)
       end)
-      |> Reporter.analyse()
+
+    stats = Stats.new()
+    collector = Composite.new([stats])
+
+    flow
+    |> Reporter.attach(collector)
+    |> Flow.run()
+
+    %Stats.Report{} = Stats.report(stats)
   end
 end
