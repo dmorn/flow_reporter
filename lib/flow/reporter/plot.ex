@@ -45,8 +45,8 @@ defmodule Flow.Reporter.Plot do
   defp encode_measurements(vl, measurements) do
     vl
     |> Vl.data_from_values(measurements)
-    |> Vl.encode_field(:x, "time", type: :temporal, time_unit: :milliseconds)
-    |> Vl.encode_field(:y, "count", type: :quantitative)
-    |> Vl.encode_field(:color, "operation", type: :nominal)
+    |> Vl.encode_field(:x, "time", type: :temporal, time_unit: :milliseconds, title: "Time (ms)")
+    |> Vl.encode_field(:y, "count", type: :quantitative, title: "Processed Items")
+    |> Vl.encode_field(:color, "operation", type: :nominal, title: "Operation")
   end
 end

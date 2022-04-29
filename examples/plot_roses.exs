@@ -29,13 +29,14 @@ flow =
     Map.update(acc, x, 1, fn old -> old + 1 end)
   end)
 
-collector = Stats.new()
+id = Reporter.uniq_event_prefix()
+collector = Stats.new(id)
 
 flow
-|> Reporter.attach(collector)
+|> Reporter.attach(collector, id)
 |> Flow.run()
 
-spans = Stats.spans(collector)
+spans = Stats.spans_stream(collector)
 
 Vl.new(width: 960, height: 540)
 |> Plot.encode_spans(spans)
