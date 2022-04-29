@@ -21,4 +21,6 @@ defmodule Flow.Reporter.Stats.State do
 
     %State{state | pending: pending, spans: [span | spans]}
   end
+
+  def spans(%State{spans: spans}), do: spans
 end

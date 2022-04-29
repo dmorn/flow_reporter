@@ -22,7 +22,8 @@ defmodule Flow.Reporter.MixProject do
   defp deps do
     [
       {:statistex, "~> 1.0"},
-      {:flow_telemetry, git: "https://github.com/dmorn/flow_telemetry.git"},
+      {:vega_lite, "~> 0.1.4"},
+      {:flow_telemetry, git: "https://github.com/dmorn/flow_telemetry.git"}
       # :dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
     ]
   end

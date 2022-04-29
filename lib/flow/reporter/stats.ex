@@ -22,6 +22,12 @@ defmodule Flow.Reporter.Stats do
     state = Agent.get(pid, fn state -> state end, :infinity)
     Report.from_state(state)
   end
+
+  def spans(%Stats{pid: pid}) do
+    pid
+    |> Agent.get(fn state -> state end, :infinity)
+    |> Stats.State.spans()
+  end
 end
 
 defimpl Flow.Telemetry.Collector, for: Flow.Reporter.Stats do
