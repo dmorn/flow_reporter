@@ -12,8 +12,8 @@ defmodule Flow.Reporter.Plot do
   is provided by the span identifier. Time is relative to the first span in the
   list.
   """
-  @spec encode_spans(VegaLite.t(), [Span.t()]) :: VegaLite.t()
-  def encode_spans(vl, spans) when is_list(spans) do
+  @spec encode_spans(VegaLite.t(), Enumerable.t()) :: VegaLite.t()
+  def encode_spans(vl, spans) do
     spans =
       spans
       |> Enum.map(&Span.convert_time_unit(&1, :millisecond))
